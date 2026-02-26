@@ -12,7 +12,7 @@ public class Customer
     public string Name { get; private set; } = default!;
     public Document Document { get; private set; } = default!;
     public string Email { get; private set; } = default!;
-    public DateOnly? BirthDate { get; private set; }
+    public DateTime? BirthDate { get; private set; }
     public string? CompanyName { get; private set; }
     public string? StateRegistration { get; private set; }
     public Address? Address { get; private set; }
@@ -32,7 +32,7 @@ public class Customer
         string name,
         string document,
         string email,
-        DateOnly? birthDate,
+        DateTime? birthDate,
         string? companyName,
         string? stateRegistration,
         Address? address)
@@ -139,9 +139,9 @@ public class Customer
         Version++;
     }
 
-    private static int CalculateAge(DateOnly birthDate)
+    private static int CalculateAge(DateTime birthDate)
     {
-        var today = DateOnly.FromDateTime(DateTime.Today);
+        var today = DateTime.Today;
         var age = today.Year - birthDate.Year;
         if (birthDate.AddYears(age) > today) age--;
         return age;

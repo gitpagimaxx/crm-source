@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 using CRM.Backend.Application.Interfaces;
+using Dapper;
 
 namespace CRM.Backend.Infra.Extensions;
 
@@ -15,6 +16,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        // Register Dapper type handlers for DateOnly
+        SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
+        SqlMapper.AddTypeHandler(new NullableDateOnlyTypeHandler());
+
         var connectionString = configuration.GetConnectionString("Postgres")
             ?? throw new InvalidOperationException(
                 "PostgreSQL connection string 'Postgres' is not configured. " +

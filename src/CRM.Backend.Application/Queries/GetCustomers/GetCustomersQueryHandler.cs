@@ -4,11 +4,9 @@ using MediatR;
 
 namespace CRM.Backend.Application.Queries.GetCustomers;
 
-public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, IEnumerable<CustomerDto>>
+public class GetCustomersQueryHandler(ICustomerReadRepository readRepo) : IRequestHandler<GetCustomersQuery, IEnumerable<CustomerDto>>
 {
-    private readonly ICustomerReadRepository _readRepo;
-
-    public GetCustomersQueryHandler(ICustomerReadRepository readRepo) => _readRepo = readRepo;
+    private readonly ICustomerReadRepository _readRepo = readRepo;
 
     public async Task<IEnumerable<CustomerDto>> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
     {

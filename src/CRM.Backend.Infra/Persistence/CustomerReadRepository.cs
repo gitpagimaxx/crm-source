@@ -59,7 +59,7 @@ public class CustomerReadRepository(DbConnectionFactory factory) : ICustomerRead
 
     private static CustomerReadModel MapToModel(CustomerRow r) => new(
         r.id, r.customer_type, r.name, r.document, r.email,
-        r.birth_date.HasValue ? DateOnly.FromDateTime(r.birth_date.Value) : null,
+        r.birth_date.HasValue ? r.birth_date.Value : null,
         r.company_name, r.state_registration,
         r.zip_code, r.street, r.number, r.complement, r.neighborhood, r.city, r.state,
         r.status, r.created_at, r.updated_at

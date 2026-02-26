@@ -7,7 +7,7 @@ public record CreateCustomerCommand(
     string Name,
     string Document,
     string Email,
-    DateOnly? BirthDate,
+    DateTime? BirthDate,
     string? CompanyName,
     string? StateRegistration,
     string? ZipCode,

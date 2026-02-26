@@ -4,22 +4,16 @@ using Newtonsoft.Json;
 
 namespace CRM.Backend.Infra.ExternalServices;
 
-public class ViaCepService : IViaCepService
+public class ViaCepService(HttpClient httpClient, ILogger<ViaCepService> logger) : IViaCepService
 {
-    private readonly HttpClient _httpClient;
-    private readonly ILogger<ViaCepService> _logger;
-
-    public ViaCepService(HttpClient httpClient, ILogger<ViaCepService> logger)
-    {
-        _httpClient = httpClient;
-        _logger = logger;
-    }
+    private readonly HttpClient _httpClient = httpClient;
+    private readonly ILogger<ViaCepService> _logger = logger;
 
     public async Task<ViaCepResult?> GetAddressAsync(string zipCode, CancellationToken ct = default)
     {
         try
         {
-            var cleaned = new string(zipCode.Where(char.IsDigit).ToArray());
+            var cleaned = new string([.. zipCode.Where(char.IsDigit)]);
             var response = await _httpClient.GetStringAsync($"https://viacep.com.br/ws/{cleaned}/json/", ct);
             var result = JsonConvert.DeserializeObject<ViaCepApiResponse>(response);
             if (result is null) return null;

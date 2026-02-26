@@ -1,6 +1,8 @@
 ﻿using CRM.Backend.Application.Commands.CreateCustomer;
 using CRM.Backend.Application.Commands.UpdateCustomer;
 using CRM.Backend.Application.Common;
+using CRM.Backend.Application.Interfaces;
+using CRM.Backend.Application.Queries.CheckDocumentUniqueness;
 using CRM.Backend.Application.Queries.GetCustomer;
 using CRM.Backend.Application.Queries.GetCustomerEvents;
 using CRM.Backend.Application.Queries.GetCustomers;
@@ -61,6 +63,22 @@ public static class CustomerEndpoints
             return Results.Ok(result);
         })
         .WithName("GetCustomerEvents")
+        .WithTags("Customers");
+
+        group.MapGet("/check-document/{document}", async (string document, IMediator mediator) =>
+        {
+            var result = await mediator.Send(new CheckDocumentUniquenessQuery(document));
+            return Results.Ok(result);
+        })
+        .WithName("CheckDocumentUniqueness")
+        .WithTags("Customers");
+
+        group.MapGet("/address/{zipCode}", async (string zipCode, IViaCepService viaCepService) =>
+        {
+            var result = await viaCepService.GetAddress(zipCode);
+            return result is null ? Results.NotFound(new { message = "CEP não encontrado" }) : Results.Ok(result);
+        })
+        .WithName("GetAddressByZipCode")
         .WithTags("Customers");
     }
 

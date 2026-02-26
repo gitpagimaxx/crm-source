@@ -32,6 +32,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     public async Task<Guid> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var cleanedDoc = new string(request.Document.Where(char.IsDigit).ToArray());
+        
         if (await _readRepo.ExistsByDocument(cleanedDoc, cancellationToken))
             throw new DomainException("Documento já cadastrado.");
 
@@ -43,7 +44,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         Address? address = null;
         if (!string.IsNullOrWhiteSpace(request.ZipCode))
         {
-            var cepResult = await _viaCep.GetAddressAsync(request.ZipCode, cancellationToken);
+            var cepResult = await _viaCep.GetAddress(request.ZipCode, cancellationToken);
             if (cepResult != null && !cepResult.Erro)
             {
                 address = new Address(

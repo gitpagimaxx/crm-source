@@ -11,15 +11,18 @@ namespace CRM.Backend.Application.Commands.UpdateCustomer;
 public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Unit>
 {
     private readonly IEventStoreRepository _eventStore;
+    private readonly ICustomerReadRepository _readRepo;
     private readonly IViaCepService _viaCep;
     private readonly UserContext _userContext;
 
     public UpdateCustomerCommandHandler(
         IEventStoreRepository eventStore,
+        ICustomerReadRepository readRepo,
         IViaCepService viaCep,
         UserContext userContext)
     {
         _eventStore = eventStore;
+        _readRepo = readRepo;
         _viaCep = viaCep;
         _userContext = userContext;
     }
@@ -30,12 +33,16 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
         if (!events.Any())
             throw new DomainException("Cliente não encontrado.");
 
+        // Validar se o e-mail já está em uso por outro cliente
+        if (await _readRepo.ExistsByEmailExcludingId(request.Email, request.CustomerId, cancellationToken))
+            throw new DomainException("E-mail já cadastrado para outro cliente.");
+
         var customer = Customer.Reconstitute(events);
 
         Address? address = null;
         if (!string.IsNullOrWhiteSpace(request.ZipCode))
         {
-            var cepResult = await _viaCep.GetAddressAsync(request.ZipCode, cancellationToken);
+            var cepResult = await _viaCep.GetAddress(request.ZipCode, cancellationToken);
             if (cepResult != null && !cepResult.Erro)
             {
                 address = new Address(

@@ -2,7 +2,7 @@
 
 public interface IViaCepService
 {
-    Task<ViaCepResult?> GetAddressAsync(string zipCode, CancellationToken ct = default);
+    Task<ViaCepResult?> GetAddress(string zipCode, CancellationToken ct = default);
 }
 
 public record ViaCepResult(

@@ -9,7 +9,7 @@ public class ViaCepService(HttpClient httpClient, ILogger<ViaCepService> logger)
     private readonly HttpClient _httpClient = httpClient;
     private readonly ILogger<ViaCepService> _logger = logger;
 
-    public async Task<ViaCepResult?> GetAddressAsync(string zipCode, CancellationToken ct = default)
+    public async Task<ViaCepResult?> GetAddress(string zipCode, CancellationToken ct = default)
     {
         try
         {

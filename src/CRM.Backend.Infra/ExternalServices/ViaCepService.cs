@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CRM.Backend.Application.Interfaces;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace CRM.Backend.Infra.ExternalServices;

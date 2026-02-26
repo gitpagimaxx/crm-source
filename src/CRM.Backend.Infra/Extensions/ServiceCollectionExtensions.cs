@@ -1,5 +1,4 @@
-﻿using CRM.Backend.Application.Interfaces;
-using CRM.Backend.Domain.Interfaces;
+﻿using CRM.Backend.Domain.Interfaces;
 using CRM.Backend.Infra.Auth;
 using CRM.Backend.Infra.Persistence;
 using CRM.Backend.Infra.Projection;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
+using CRM.Backend.Application.Interfaces;
 
 namespace CRM.Backend.Infra.Extensions;
 

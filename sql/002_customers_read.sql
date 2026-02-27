@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS customers_read (
+    id UUID PRIMARY KEY,
+    customer_type VARCHAR(10) NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    document VARCHAR(20) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    birth_date DATE,
+    company_name VARCHAR(200),
+    state_registration VARCHAR(100),
+    zip_code VARCHAR(10),
+    street VARCHAR(300),
+    number VARCHAR(20),
+    complement VARCHAR(200),
+    neighborhood VARCHAR(200),
+    city VARCHAR(200),
+    state VARCHAR(2),
+    status VARCHAR(20) NOT NULL DEFAULT 'Active',
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ,
+    CONSTRAINT uq_customers_document UNIQUE (document),
+    CONSTRAINT uq_customers_email UNIQUE (email)
+);

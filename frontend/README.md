@@ -17,7 +17,7 @@ React + TypeScript SPA para consumir a API CRM (.NET).
 ## Instalação
 
 ```bash
-cd src/Frontend
+cd src/frontend
 npm install
 ```
 
@@ -36,14 +36,14 @@ cp .env.example .env
 ### Proxy Vite (recomendado para dev)
 
 Por padrão, o dev server Vite faz proxy das rotas `/auth` e `/customers` para
-`http://localhost:5004` (porta padrão do perfil `http` do `dotnet run`).
+`http://localhost:5178` (porta padrão do perfil `http` do `dotnet run`).
 Você **não precisa configurar CORS** no backend ao usar este proxy.
 
 Se a API rodar em outra porta, ajuste `VITE_API_BASE_URL` no `.env` **e** o
 target do proxy no `vite.config.ts`:
 
 ```
-VITE_API_BASE_URL=http://localhost:5000
+VITE_API_BASE_URL=http://localhost:5178
 ```
 
 Com `VITE_API_BASE_URL` definido, as requisições vão direto à API (sem proxy);

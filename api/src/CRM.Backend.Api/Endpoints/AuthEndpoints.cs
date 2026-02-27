@@ -6,7 +6,7 @@ public static class AuthEndpoints
 {
     public static void MapAuthEndpoints(this WebApplication app)
     {
-        app.MapPost("/auth/token", (TokenRequest request, JwtService jwtService, IWebHostEnvironment env) =>
+        app.MapPost("api/auth/token", (TokenRequest request, JwtService jwtService, IWebHostEnvironment env) =>
         {
             if (!env.IsDevelopment())
                 return Results.Problem("Demo auth endpoint is only available in Development.", statusCode: 403);

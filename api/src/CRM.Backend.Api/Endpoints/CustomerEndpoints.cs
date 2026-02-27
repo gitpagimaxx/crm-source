@@ -18,7 +18,7 @@ public static class CustomerEndpoints
 
     public static void MapCustomerEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/customers").RequireAuthorization();
+        var group = app.MapGroup("api/customers").RequireAuthorization();
 
         group.MapPost("/", async (CreateCustomerCommand command, IMediator mediator, HttpContext ctx, UserContext userCtx) =>
         {

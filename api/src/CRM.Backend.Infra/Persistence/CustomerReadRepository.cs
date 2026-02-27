@@ -8,11 +8,31 @@ public class CustomerReadRepository(DbConnectionFactory factory) : ICustomerRead
 {
     private readonly DbConnectionFactory _factory = factory;
 
+    private const string SelectFields = @"
+        id AS Id,
+        customer_type AS CustomerType,
+        name AS Name,
+        document AS Document,
+        email AS Email,
+        birth_date AS BirthDate,
+        company_name AS CompanyName,
+        state_registration AS StateRegistration,
+        zip_code AS ZipCode,
+        street AS Street,
+        number AS Number,
+        complement AS Complement,
+        neighborhood AS Neighborhood,
+        city AS City,
+        state AS State,
+        status AS Status,
+        created_at AS CreatedAt,
+        updated_at AS UpdatedAt";
+
     public async Task<CustomerReadModel?> GetById(Guid id, CancellationToken ct = default)
     {
         using var conn = _factory.CreateConnection();
         var row = await conn.QueryFirstOrDefaultAsync<CustomerRow>(
-            "SELECT * FROM customers_read WHERE id = @id", new { id });
+            $"SELECT {SelectFields} FROM customers_read WHERE id = @id", new { id });
         return row is null ? null : MapToModel(row);
     }
 
@@ -20,7 +40,7 @@ public class CustomerReadRepository(DbConnectionFactory factory) : ICustomerRead
     {
         using var conn = _factory.CreateConnection();
         var rows = await conn.QueryAsync<CustomerRow>(
-            "SELECT * FROM customers_read ORDER BY created_at DESC LIMIT @pageSize OFFSET @offset",
+            $"SELECT {SelectFields} FROM customers_read ORDER BY created_at DESC LIMIT @pageSize OFFSET @offset",
             new { pageSize, offset = (page - 1) * pageSize });
         return rows.Select(MapToModel);
     }

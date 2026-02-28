@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: crm_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: crm
+    ports:
+      - "5433:5432"   # host 5433 -> container 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d crm"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  api:
+    build:
+      context: .
+      dockerfile: api/src/CRM.Backend.Api/Dockerfile
+    container_name: crm_api
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=crm;Username=postgres;Password=postgres
+      Jwt__SigningKey: "I1p08bw9/baCjkNHkdtn3LKBesQMVbBhmCf8tHPRAVVDlkg94uF8RdVRo0dL8QQTaf3h8anWQ/tzorMiol698w=="
+      ASPNETCORE_ENVIRONMENT: Development  # para garantir swagger, se seu código limita a dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "7148:8080"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_BASE_URL: "http://localhost:7148"
+    container_name: crm_frontend
+    depends_on:
+      - api
+    ports:
+      - "5173:80"
+
+volumes:
+  pgdata:

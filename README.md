@@ -1,6 +1,10 @@
-# CRM System - Customer Relationship Management
+# Projeto de CRM de um desafio técnico
 
 Sistema completo de CRM (Customer Relationship Management) construído com arquitetura moderna, seguindo princípios de Clean Architecture, CQRS e Event Sourcing.
+
+## 📝 Sobre o Desafio Técnico
+
+Este repositório contém a minha resolução para o teste técnico da **Rommanel**. O objetivo era construir um Sistema de CRM seguindo os requisitos propostos.
 
 ## 📋 Índice
 

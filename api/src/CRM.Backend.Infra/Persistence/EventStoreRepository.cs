@@ -124,5 +124,7 @@ public class EventStoreRepository : IEventStoreRepository
         };
     }
 
+    private record EventDataRow(string event_type, string event_data);
+
     private record StoredEventRow(long id, Guid stream_id, string event_type, string event_data, string? metadata, int stream_version, DateTime created_at, string? actor_user_id, string? actor_email, string? actor_name, string? correlation_id);
 }
